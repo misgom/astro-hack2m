@@ -6,7 +6,7 @@ import Chat from '../components/Chat.svelte';
 
 <Layout title="Hack2m">
 	<!-- background -->
-	<div class="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
+	<div class="fixed inset-0 -z-10 min-h-screen w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
 
 	<main class="grid place-content-center min-h-screen w-screen">
 		<h1 class="text-white text-5xl opacity-80 font-bold text-center pb-10">
@@ -20,5 +20,7 @@ import Chat from '../components/Chat.svelte';
 </Layout>
 
 <style>
-
+	html, body {
+		min-height: 100%;
+	}
 </style>

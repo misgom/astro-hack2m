@@ -5,6 +5,7 @@
     let loading = false
 
     const handleSubmit = async (event) => {
+        answer = ''
         event.preventDefault()
         loading = true
         const question = event.target.question.value
