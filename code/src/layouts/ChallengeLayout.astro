@@ -1,0 +1,27 @@
+---
+import Layout from './Layout.astro';
+import Chat from '../components/Chat.svelte';
+import ChallengeSelector from '../components/ChallengeSelector.svelte';
+---
+
+<Layout title="Hack2m - Challenges">
+	<!-- background -->
+	<div class="fixed inset-0 -z-10 min-h-screen w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
+
+	<main class="container mx-auto px-4 py-8">
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+			<div class="md:col-span-1">
+				<ChallengeSelector client:load />
+			</div>
+			<div class="md:col-span-3">
+				<Chat client:load />
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	html, body {
+		min-height: 100%;
+	}
+</style>
