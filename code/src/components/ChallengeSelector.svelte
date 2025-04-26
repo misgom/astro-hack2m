@@ -1,6 +1,6 @@
 <script>
     import { Button, Card, Spinner } from "flowbite-svelte";
-    import { selectedChallenge } from '../stores/challenge';
+    import { selectedChallenge, completedChallenges } from '../stores/challenge';
     import { config } from '../config';
 
     let challenges = [];
@@ -10,6 +10,9 @@
     async function fetchChallenges() {
         try {
             loading = true;
+            // Reset selected challenge while loading
+            $selectedChallenge = null;
+
             const response = await fetch(`${config.api.baseUrl}${config.api.endpoints.challenges}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch challenges');
@@ -41,8 +44,10 @@
     </h5>
 
     {#if loading}
-        <div class="flex justify-center items-center py-8">
-            <Spinner />
+        <div class="space-y-2">
+            {#each Array(9) as _}
+                <div class="w-full h-10 bg-gray-700 rounded-lg animate-pulse"></div>
+            {/each}
         </div>
     {:else if error}
         <div class="text-red-500 text-center py-4">
@@ -60,16 +65,19 @@
             {#each challenges as challenge}
                 <Button
                     color={$selectedChallenge?.id === challenge.id ? "blue" : "dark"}
-                    class="w-full text-left flex justify-between items-center"
+                    class="w-full text-left justify-start relative
+                        {$completedChallenges.includes(challenge.id) ? 'border-l-[6px] border-green-500' : ''}
+                        {$selectedChallenge?.id === challenge.id ? 'bg-blue-500/10 hover:bg-blue-500/15' : ''}"
                     on:click={() => $selectedChallenge = challenge}
                 >
-                    <span class="flex-1 text-left">{challenge.title}</span>
-                    <span class="text-xs px-2 py-1 rounded-full ml-2
-                        {challenge.difficulty === 'EASY' ? 'bg-green-500' :
-                         challenge.difficulty === 'MEDIUM' ? 'bg-yellow-500' :
-                         'bg-red-500'}">
-                        {challenge.difficulty}
-                    </span>
+                    <div class="flex items-center justify-between w-full">
+                        <span class="{$completedChallenges.includes(challenge.id) && $selectedChallenge?.id !== challenge.id ? 'text-green-400' : 'text-white'}">
+                            {challenge.title}
+                        </span>
+                        {#if $completedChallenges.includes(challenge.id)}
+                            <span class="text-green-500 text-xl font-bold">✓</span>
+                        {/if}
+                    </div>
                 </Button>
             {/each}
         </div>

@@ -11,7 +11,9 @@ import ChallengeSelector from '../components/ChallengeSelector.svelte';
 	<main class="container mx-auto px-4 py-8">
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 			<div class="md:col-span-1">
-				<ChallengeSelector client:load />
+				<div class="sticky top-8">
+					<ChallengeSelector client:load />
+				</div>
 			</div>
 			<div class="md:col-span-3">
 				<Chat client:load />

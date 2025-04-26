@@ -1,15 +1,25 @@
 <script>
-    import { Label, Input, Spinner } from "flowbite-svelte";
+    import { Label, Input, Spinner, Select } from "flowbite-svelte";
     import { selectedChallenge } from '../stores/challenge';
     import FlagVerifier from './FlagVerifier.svelte';
     import { config } from '../config';
     import { marked } from 'marked';
+    import { markedHighlight } from 'marked-highlight';
+    import hljs from 'highlight.js';
+    import 'highlight.js/styles/github-dark.css';
 
     let loading = false;
     let error = null;
     let question = '';
-    let currentAnswer = ''; // Local state for current response
-    let challengeHistory = new Map(); // Map to store challenge history
+    let currentAnswer = '';
+    let challengeHistory = new Map();
+    let selectedDifficulty = 'EASY';
+
+    const difficulties = [
+        { value: 'EASY', label: 'Easy' },
+        { value: 'MEDIUM', label: 'Medium' },
+        { value: 'HARD', label: 'Hard' }
+    ];
 
     // Initialize or update challenge history when selected challenge changes
     $: if ($selectedChallenge) {
@@ -25,7 +35,27 @@
         question = history.question;
         error = history.error;
         currentAnswer = history.answer;
+        // Update selected difficulty to match the current challenge
+        selectedDifficulty = $selectedChallenge.difficulty;
     }
+
+    // Configure marked with syntax highlighting
+    marked.use(markedHighlight({
+        highlight(code, lang) {
+            if (!lang) return code;
+            try {
+                return hljs.highlight(code, { language: lang }).value;
+            } catch (e) {
+                return code;
+            }
+        }
+    }));
+
+    // Configure marked options
+    marked.setOptions({
+        breaks: true, // Convert \n to <br>
+        gfm: true,    // Enable GitHub Flavored Markdown
+    });
 
     const handleSubmit = async (event) => {
         if (!$selectedChallenge) {
@@ -80,15 +110,41 @@
             loading = false;
         }
     }
-
-    // Configure marked options
-    marked.setOptions({
-        breaks: true, // Convert \n to <br>
-        gfm: true,    // Enable GitHub Flavored Markdown
-    });
 </script>
 
 <div class="space-y-8">
+    {#if !$selectedChallenge}
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-48 h-8 bg-gray-700 rounded-lg animate-pulse"></div>
+                <div class="w-16 h-6 bg-gray-700 rounded-full animate-pulse"></div>
+            </div>
+            <div class="w-48 h-10 bg-gray-700 rounded-lg animate-pulse"></div>
+        </div>
+    {:else}
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center gap-3">
+                <h2 class="text-2xl font-bold text-white">{$selectedChallenge.title}</h2>
+                <span class="text-sm px-2 py-1 rounded-full
+                    {$selectedChallenge.difficulty === 'EASY' ? 'bg-green-500' :
+                     $selectedChallenge.difficulty === 'MEDIUM' ? 'bg-yellow-500' :
+                     'bg-red-500'}">
+                    {$selectedChallenge.difficulty}
+                </span>
+            </div>
+            <div class="w-48">
+                <select
+                    bind:value={selectedDifficulty}
+                    class="w-full bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                >
+                    {#each difficulties as difficulty}
+                        <option value={difficulty.value}>{difficulty.label}</option>
+                    {/each}
+                </select>
+            </div>
+        </div>
+    {/if}
+
     <form class="mt-8" on:submit={handleSubmit}>
         <div class="mb-6">
             <Label for="question" class="block mb-2">Your Question</Label>
@@ -122,47 +178,5 @@
 </div>
 
 <style>
-    :global(.prose) {
-        color: white;
-    }
-
-    :global(.prose pre) {
-        background-color: #1a1a1a;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        overflow-x: auto;
-    }
-
-    :global(.prose code) {
-        background-color: #1a1a1a;
-        padding: 0.2rem 0.4rem;
-        border-radius: 0.25rem;
-    }
-
-    :global(.prose a) {
-        color: #63e;
-        text-decoration: underline;
-    }
-
-    :global(.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6) {
-        color: white;
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    :global(.prose p) {
-        margin-bottom: 1rem;
-    }
-
-    :global(.prose ul, .prose ol) {
-        margin-bottom: 1rem;
-        padding-left: 1.5rem;
-    }
-
-    :global(.prose blockquote) {
-        border-left: 4px solid #63e;
-        padding-left: 1rem;
-        margin-left: 0;
-        color: #a0a0a0;
-    }
+    /* No styles needed here as they are now global */
 </style>
