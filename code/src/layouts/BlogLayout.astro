@@ -42,186 +42,75 @@ const { frontmatter } = Astro.props;
 		min-height: 100%;
 	}
 
-	.prose {
-		--tw-prose-body: #ffffff;
-		--tw-prose-headings: #ffffff;
-		--tw-prose-links: #93c5fd;
-		--tw-prose-bold: #ffffff;
-		--tw-prose-counters: #ffffff;
-		--tw-prose-bullets: #ffffff;
-		--tw-prose-hr: #ffffff;
-		--tw-prose-quotes: #ffffff;
-		--tw-prose-quote-borders: #ffffff;
-		--tw-prose-captions: #ffffff;
-		--tw-prose-code: #ffffff;
-		--tw-prose-pre-code: #ffffff;
-		--tw-prose-pre-bg: #1e293b;
-		--tw-prose-th-borders: #ffffff;
-		--tw-prose-td-borders: #ffffff;
+	:global(.prose) {
+		color: white;
 	}
 
-	/* Base text styling */
-	.prose :where(p):not(:where([class~="not-prose"] *)) {
-		color: #ffffff;
-		font-size: 1.125rem;
-		line-height: 1.75;
-		margin-bottom: 1.75em;
-	}
-
-	/* Headings */
-	.prose h1 {
-		font-size: 2.5rem;
-		line-height: 1.2;
-		margin-top: 2.5em;
-		margin-bottom: 1em;
-		position: relative;
-		font-weight: 700;
-		letter-spacing: -0.025em;
-	}
-
-	.prose h2 {
-		font-size: 2rem;
-		line-height: 1.3;
-		margin-top: 2.5em;
-		margin-bottom: 1em;
-		color: #ffffff;
-		position: relative;
-		font-weight: 600;
-		letter-spacing: -0.025em;
-		padding-bottom: 0.5em;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-	}
-
-	.prose h3 {
-		font-size: 1.5rem;
-		line-height: 1.4;
-		margin-top: 2em;
-		margin-bottom: 1em;
-		color: #ffffff;
-		font-weight: 600;
-		letter-spacing: -0.025em;
-	}
-
-	/* Lists */
-	.prose ul, .prose ol {
-		color: #ffffff;
-		padding-left: 1.5em;
-		margin-bottom: 1.75em;
-	}
-
-	.prose ul > li {
-		position: relative;
-		padding-left: 1.5em;
-		margin-bottom: 0.75em;
-	}
-
-	.prose ul > li::before {
-		content: "";
-		position: absolute;
-		left: 0;
-		top: 0.75em;
-		width: 6px;
-		height: 6px;
-		background-color: #93c5fd;
-		border-radius: 50%;
-	}
-
-	.prose ol {
-		counter-reset: item;
-	}
-
-	.prose ol > li {
-		position: relative;
-		padding-left: 2em;
-		margin-bottom: 0.75em;
-		counter-increment: item;
-	}
-
-	.prose ol > li::before {
-		content: counter(item) ".";
-		position: absolute;
-		left: 0;
-		color: #93c5fd;
-		font-weight: 500;
-	}
-
-	/* Code blocks */
-	.prose code {
-		background-color: rgba(255, 255, 255, 0.1);
-		padding: 0.2em 0.4em;
-		border-radius: 0.25em;
-		font-size: 0.875em;
-		color: #ffffff;
-		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-	}
-
-	.prose pre {
-		background-color: #1e293b;
-		padding: 1.5em;
-		border-radius: 0.5em;
+	:global(.prose pre) {
+		background-color: #1a1a1a;
+		padding: 1rem;
+		border-radius: 0.5rem;
 		overflow-x: auto;
-		margin-bottom: 2em;
-		border: 1px solid rgba(255, 255, 255, 0.1);
 	}
 
-	/* Blockquotes */
-	.prose blockquote {
-		border-left: 4px solid #93c5fd;
-		padding: 1.5em 1.5em;
-		margin: 2em 0;
-		background-color: rgba(255, 255, 255, 0.05);
-		border-radius: 0.5em;
-		font-style: italic;
-		color: #ffffff;
+	:global(.prose code) {
+		background-color: #1a1a1a;
+		padding: 0.2rem 0.4rem;
+		border-radius: 0.25rem;
 	}
 
-	.prose blockquote p {
-		margin: 0;
-		line-height: 1.7;
-	}
-
-	/* Links */
-	.prose a {
-		text-decoration: none;
-		font-weight: 500;
-		color: #93c5fd;
-		transition: color 0.2s ease;
-	}
-
-	.prose a:hover {
-		color: #60a5fa;
+	:global(.prose a) {
+		color: #63e;
 		text-decoration: underline;
 	}
 
-	/* Images */
-	.prose img {
-		border-radius: 0.75em;
-		margin: 2.5em auto;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	:global(.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6) {
+		color: white;
+		margin-top: 1.5rem;
+		margin-bottom: 1rem;
 	}
 
-	/* Horizontal rule */
-	.prose hr {
-		border-color: rgba(255, 255, 255, 0.1);
-		margin: 3em 0;
+	:global(.prose p) {
+		margin-bottom: 1rem;
 	}
 
-	/* Responsive adjustments */
-	@media (max-width: 768px) {
-		.prose {
-			padding: 0 1rem;
-		}
+	:global(.prose ul, .prose ol) {
+		margin-bottom: 1rem;
+		padding-left: 1.5rem;
+	}
 
-		.prose h1 {
-			font-size: 2rem;
-		}
+	:global(.prose blockquote) {
+		border-left: 4px solid #63e;
+		padding-left: 1rem;
+		margin-left: 0;
+		color: #a0a0a0;
+	}
 
-		.prose h2 {
-			font-size: 1.75rem;
-		}
+	:global(.prose img) {
+		border-radius: 0.5rem;
+		margin: 2rem auto;
+	}
 
-		.prose h3 {
-			font-size: 1.25rem;
-		}
+	:global(.prose table) {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1.5rem 0;
+	}
+
+	:global(.prose th) {
+		background-color: #1a1a1a;
+		padding: 0.75rem;
+		text-align: left;
+		border: 1px solid #333;
+	}
+
+	:global(.prose td) {
+		padding: 0.75rem;
+		border: 1px solid #333;
+	}
+
+	:global(.prose hr) {
+		border-color: #333;
+		margin: 2rem 0;
 	}
 </style>
