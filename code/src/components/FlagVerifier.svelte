@@ -22,13 +22,13 @@
         try {
             const response = await fetch(`${config.api.baseUrl}${config.api.endpoints.verify}`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     challenge_id: $selectedChallenge.id,
-                    flag: flag.trim(),
-                    user_id: "1"
+                    flag: flag.trim()
                 }),
             });
 

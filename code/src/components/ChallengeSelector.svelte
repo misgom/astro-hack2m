@@ -1,11 +1,13 @@
 <script>
-    import { Button, Card, Spinner } from "flowbite-svelte";
+    import { Button, Card } from "flowbite-svelte";
     import { selectedChallenge, completedChallenges } from '../stores/challenge';
     import { config } from '../config';
+    import { onMount } from 'svelte';
 
     let challenges = [];
     let loading = true;
     let error = null;
+    let challengeScores = {};
 
     async function fetchChallenges() {
         try {
@@ -13,29 +15,51 @@
             // Reset selected challenge while loading
             $selectedChallenge = null;
 
-            const response = await fetch(`${config.api.baseUrl}${config.api.endpoints.challenges}`);
-            if (!response.ok) {
+            const [challengesResponse, scoresResponse] = await Promise.all([
+                fetch(
+                    `${config.api.baseUrl}${config.api.endpoints.challenges}`,
+                    {credentials: 'include'}
+                ),
+                fetch(
+                    `${config.api.baseUrl}${config.api.endpoints.scores}`,
+                    {credentials: 'include'}
+                )
+            ]);
+
+            if (!challengesResponse.ok) {
                 throw new Error('Failed to fetch challenges');
             }
-            const data = await response.json();
-            if (data.success && data.data && Array.isArray(data.data.challenges)) {
-                challenges = data.data.challenges;
+            if (!scoresResponse.ok) {
+                throw new Error('Failed to fetch scores');
+            }
+
+            const challengesData = await challengesResponse.json();
+            const scoresData = await scoresResponse.json();
+
+            if (challengesData.success && challengesData.data && Array.isArray(challengesData.data.challenges)) {
+                challenges = challengesData.data.challenges;
                 if (challenges.length > 0) {
                     $selectedChallenge = challenges[0];
                 }
             } else {
-                throw new Error('Invalid response format');
+                throw new Error('Invalid challenges response format');
+            }
+
+            if (scoresData.success && scoresData.data && typeof scoresData.data === 'object') {
+                challengeScores = scoresData.data;
+            } else {
+                throw new Error('Invalid scores response format');
             }
         } catch (e) {
             error = e.message;
-            console.error('Error fetching challenges:', e);
+            console.error('Error fetching data:', e);
         } finally {
             loading = false;
         }
     }
 
-    // Fetch challenges when component mounts
-    fetchChallenges();
+    // Fetch challenges only once during client-side initialization
+    onMount(fetchChallenges);
 </script>
 
 <Card class="h-full">
@@ -70,12 +94,19 @@
                         {$selectedChallenge?.id === challenge.id ? 'bg-blue-500/10 hover:bg-blue-500/15' : ''}"
                     on:click={() => $selectedChallenge = challenge}
                 >
-                    <div class="flex items-center justify-between w-full">
-                        <span class="{$completedChallenges.includes(challenge.id) && $selectedChallenge?.id !== challenge.id ? 'text-green-400' : 'text-white'}">
-                            {challenge.title}
-                        </span>
-                        {#if $completedChallenges.includes(challenge.id)}
-                            <span class="text-green-500 text-xl font-bold">✓</span>
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center justify-between w-full">
+                            <span class="{$completedChallenges.includes(challenge.id) && $selectedChallenge?.id !== challenge.id ? 'text-green-400' : 'text-white'}">
+                                {challenge.title}
+                            </span>
+                            {#if $completedChallenges.includes(challenge.id)}
+                                <span class="text-green-500 text-xl font-bold">✓</span>
+                            {/if}
+                        </div>
+                        {#if challengeScores[challenge.id] !== undefined}
+                            <div class="text-sm text-gray-400 mt-1">
+                                Score: {challengeScores[challenge.id]}
+                            </div>
                         {/if}
                     </div>
                 </Button>

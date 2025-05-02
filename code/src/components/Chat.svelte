@@ -7,6 +7,8 @@
     import { markedHighlight } from 'marked-highlight';
     import hljs from 'highlight.js';
     import 'highlight.js/styles/github-dark.css';
+    import { PaperAirplaneIcon } from '@heroicons/vue/24/solid';
+    import { onMount } from 'svelte';
 
     let loading = false;
     let error = null;
@@ -14,6 +16,7 @@
     let currentAnswer = '';
     let challengeHistory = new Map();
     let selectedDifficulty = 'EASY';
+    let selectedFile = null;
 
     const difficulties = [
         { value: 'EASY', label: 'Easy' },
@@ -57,6 +60,10 @@
         gfm: true,    // Enable GitHub Flavored Markdown
     });
 
+    const handleFileChange = (event) => {
+        selectedFile = event.target.files[0];
+    };
+
     const handleSubmit = async (event) => {
         if (!$selectedChallenge) {
             error = 'Please select a challenge first';
@@ -69,16 +76,17 @@
         currentAnswer = ''; // Clear current answer while loading
 
         try {
+            const formData = new FormData();
+            formData.append('prompt', question);
+            formData.append('challenge_id', $selectedChallenge.id);
+            if (selectedFile) {
+                formData.append('file', selectedFile);
+            }
+
             const res = await fetch(`${config.api.baseUrl}${config.api.endpoints.ask}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    prompt: question,
-                    challenge_id: $selectedChallenge.id,
-                    user_id: "1"
-                }),
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
             });
 
             if (!res.ok) {
@@ -110,6 +118,20 @@
             loading = false;
         }
     }
+    async function getFlag() {
+        try {
+            const res = await fetch(`${config.api.baseUrl}/xss`, {credentials: 'include'});
+            if (!res.ok) throw new Error('Failed to get flag');
+            const flag = await res.text();
+            alert(flag);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    onMount(() => {
+        // Esto se corre SOLO en el navegador
+        window.getFlag = getFlag;
+    });
 </script>
 
 <div class="space-y-8">
@@ -148,8 +170,19 @@
     <form class="mt-8" on:submit={handleSubmit}>
         <div class="mb-6">
             <Label for="question" class="block mb-2">Your Question</Label>
-            <Input bind:value={question} id="question" required placeholder="Try to get the flag!"></Input>
+            <div class="relative">
+                <Input bind:value={question} id="question" required placeholder="Try to get the flag!" class="pr-12"></Input>
+                <button type="submit" class="absolute right-2.5 bottom-2.5 p-2 text-white bg-blue-600/60 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 rounded-lg transition-colors">
+                    <PaperAirplaneIcon class="w-6 h-6" />
+                </button>
+            </div>
         </div>
+        {#if $selectedChallenge?.id === "indirect-prompt-injection"}
+            <div class="mb-6">
+                <Label for="file" class="block mb-2">Upload File (.txt only)</Label>
+                <input type="file" id="file" accept=".txt" on:change={handleFileChange} class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+            </div>
+        {/if}
     </form>
 
     {#if loading}
@@ -178,5 +211,4 @@
 </div>
 
 <style>
-    /* No styles needed here as they are now global */
 </style>

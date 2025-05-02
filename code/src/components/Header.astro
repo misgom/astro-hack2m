@@ -44,8 +44,19 @@ const { currentPath = '/' } = Astro.props;
           >
             Learn
           </a>
+          <a
+            href="/leaderboard"
+            class={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+              currentPath === '/leaderboard'
+                ? 'border-purple-400 text-white'
+                : 'border-transparent text-gray-300 hover:text-white hover:border-purple-400/50'
+            }`}
+          >
+            Leaderboard
+          </a>
         </div>
       </div>
+      <!--
       <div class="flex items-center">
         <a
           href="/login"
@@ -54,6 +65,7 @@ const { currentPath = '/' } = Astro.props;
           Login
         </a>
       </div>
+      -->
     </div>
   </nav>
 </header>

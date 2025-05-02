@@ -5,6 +5,9 @@ export const config = {
             challenges: '/challenge-definitions',
             ask: '/ask',
             verify: '/verify',
+            leaderboard: '/leaderboard',
+            scores: '/score',
+            link: 'users/link-account'
         },
     },
 } as const;
