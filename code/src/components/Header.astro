@@ -1,4 +1,7 @@
 ---
+import UserInfo from './UserInfo.svelte';
+import AccountLinker from './AccountLinker.svelte';
+
 interface Props {
   currentPath?: string;
 }
@@ -22,7 +25,7 @@ const { currentPath = '/' } = Astro.props;
                 : 'border-transparent text-gray-300 hover:text-white hover:border-purple-400/50'
             }`}
           >
-            Home
+            Inicio
           </a>
           <a
             href="/challenges"
@@ -32,7 +35,7 @@ const { currentPath = '/' } = Astro.props;
                 : 'border-transparent text-gray-300 hover:text-white hover:border-purple-400/50'
             }`}
           >
-            Challenges
+            Retos
           </a>
           <a
             href="/learn"
@@ -42,7 +45,7 @@ const { currentPath = '/' } = Astro.props;
                 : 'border-transparent text-gray-300 hover:text-white hover:border-purple-400/50'
             }`}
           >
-            Learn
+            Aprender
           </a>
           <a
             href="/leaderboard"
@@ -52,20 +55,14 @@ const { currentPath = '/' } = Astro.props;
                 : 'border-transparent text-gray-300 hover:text-white hover:border-purple-400/50'
             }`}
           >
-            Leaderboard
+            Clasificación
           </a>
         </div>
       </div>
-      <!--
-      <div class="flex items-center">
-        <a
-          href="/login"
-          class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white bg-purple-600/50 hover:bg-purple-600/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500/50 border border-purple-500/30 transition-colors"
-        >
-          Login
-        </a>
+      <div class="flex items-center gap-4">
+        <UserInfo client:load />
+        <AccountLinker client:load />
       </div>
-      -->
     </div>
   </nav>
 </header>

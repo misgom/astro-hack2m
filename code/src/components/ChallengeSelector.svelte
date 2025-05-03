@@ -64,7 +64,7 @@
 
 <Card class="h-full">
     <h5 class="text-2xl font-bold tracking-tight text-white mb-4">
-        Challenges
+        Retos
     </h5>
 
     {#if loading}
@@ -77,12 +77,12 @@
         <div class="text-red-500 text-center py-4">
             {error}
             <Button color="blue" class="mt-4" on:click={fetchChallenges}>
-                Retry
+                Reintentar
             </Button>
         </div>
     {:else if challenges.length === 0}
         <div class="text-white/80 text-center py-4">
-            No challenges available
+            No hay retos disponibles
         </div>
     {:else}
         <div class="space-y-2">
@@ -105,7 +105,7 @@
                         </div>
                         {#if challengeScores[challenge.id] !== undefined}
                             <div class="text-sm text-gray-400 mt-1">
-                                Score: {challengeScores[challenge.id]}
+                                Puntuación: {challengeScores[challenge.id]}
                             </div>
                         {/if}
                     </div>

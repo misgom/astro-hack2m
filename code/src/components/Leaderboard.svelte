@@ -2,10 +2,13 @@
     import { config } from '../config';
     import { Spinner } from 'flowbite-svelte';
     import { onMount } from 'svelte';
+    import { currentUser } from '../stores/user';
+    import { fetchCurrentUser } from '../stores/user';
 
     let leaderboard = [];
     let loading = true;
     let error = null;
+    let userLoaded = false;
 
     async function fetchLeaderboard() {
         try {
@@ -32,11 +35,14 @@
         }
     }
 
-    onMount(fetchLeaderboard);
+    onMount(async () => {
+        await Promise.all([fetchCurrentUser(), fetchLeaderboard()]);
+        userLoaded = true;
+    });
 </script>
 
 <div class="bg-white/10 rounded-lg p-6">
-    <h2 class="text-2xl font-bold text-white mb-6">Leaderboard</h2>
+    <h2 class="text-2xl font-bold text-white mb-6">Clasificación</h2>
 
     {#if loading}
         <div class="flex justify-center items-center py-8">
@@ -49,28 +55,37 @@
                 class="mt-4 px-4 py-2 bg-purple-600/50 hover:bg-purple-600/70 text-white rounded-md transition-colors"
                 on:click={fetchLeaderboard}
             >
-                Retry
+                Reintentar
             </button>
         </div>
     {:else if leaderboard.length === 0}
         <div class="text-white/80 text-center py-4">
-            No scores available yet
+            Aún no hay puntuaciones disponibles
         </div>
     {:else}
         <div class="overflow-x-auto">
             <table class="w-full">
                 <thead>
                     <tr class="text-left border-b border-white/20">
-                        <th class="pb-3 text-white/80">Rank</th>
-                        <th class="pb-3 text-white/80">Name</th>
-                        <th class="pb-3 text-white/80">Score</th>
+                        <th class="pb-3 text-white/80">Posición</th>
+                        <th class="pb-3 text-white/80">Nombre</th>
+                        <th class="pb-3 text-white/80">Puntuación</th>
                     </tr>
                 </thead>
                 <tbody>
                     {#each leaderboard as { name, score }, i}
-                        <tr class="border-b border-white/10 last:border-0">
+                        <tr class="border-b border-white/10 last:border-0 {userLoaded && $currentUser?.name === name ? 'bg-purple-600/20' : ''}">
                             <td class="py-3 text-white/80">#{i + 1}</td>
-                            <td class="py-3 text-white">{name}</td>
+                            <td class="py-3 text-white">
+                                {#if userLoaded && $currentUser?.name === name}
+                                    <div class="flex items-center gap-2">
+                                        <span>{name}</span>
+                                        <span class="text-xs px-2 py-1 rounded-full bg-purple-600/50">Tú</span>
+                                    </div>
+                                {:else}
+                                    {name}
+                                {/if}
+                            </td>
                             <td class="py-3 text-white">{score}</td>
                         </tr>
                     {/each}

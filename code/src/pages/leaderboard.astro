@@ -1,26 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Leaderboard from '../components/Leaderboard.svelte';
-import AccountLinker from '../components/AccountLinker.svelte';
+import LeaderboardComponent from '../components/Leaderboard.svelte';
 ---
 
-<Layout title="Leaderboard - Hack2m">
+<Layout title="Clasificación - Hack2m">
 	<!-- background -->
 	<div class="fixed inset-0 -z-10 min-h-screen w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
 
 	<main class="container mx-auto px-4 py-8">
-		<div class="flex justify-end mb-4">
-			<AccountLinker client:load />
-		</div>
 		<div class="text-center mb-12">
-			<h1 class="text-5xl font-bold text-white mb-4">Leaderboard</h1>
+			<h1 class="text-5xl font-bold text-white mb-4">Clasificación</h1>
 			<p class="text-xl text-white/80 max-w-2xl mx-auto">
-				See how you rank against other players in the Hack2m challenges.
+				Mira cómo te clasificas frente a otros jugadores en los retos de Hack2m.
 			</p>
 		</div>
 
 		<div class="max-w-4xl mx-auto">
-			<Leaderboard client:load />
+			<LeaderboardComponent client:load />
 		</div>
 	</main>
 </Layout>
