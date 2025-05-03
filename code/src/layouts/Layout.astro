@@ -1,5 +1,6 @@
 ---
 import Header from '../components/Header.astro';
+import AccountLinkerModal from '../components/AccountLinkerModal.svelte';
 ---
 
 <!doctype html>
@@ -16,6 +17,7 @@ import Header from '../components/Header.astro';
 		<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 			<slot />
 		</main>
+		<AccountLinkerModal client:load />
 	</body>
 </html>
 

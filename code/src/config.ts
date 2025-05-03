@@ -7,7 +7,8 @@ export const config = {
             verify: '/verify',
             leaderboard: '/leaderboard',
             scores: '/score',
-            link: 'users/link-account'
+            link: '/users/link-account',
+            user: '/user'
         },
     },
 } as const;
