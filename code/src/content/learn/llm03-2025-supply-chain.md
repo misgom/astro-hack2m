@@ -2,7 +2,7 @@
 title: LLM03:2025 - Supply Chain
 description: Conoce los fundamentos de los ataques a la cadena de suministro y cómo defenderte de ellos
 pubDate: 2024-04-22
-author: Hack2m Team
+author: Miguel M.
 ---
 
 La adopción de modelos de lenguaje de gran tamaño (LLM) suele apoyarse en una compleja cadena de suministro que incluye modelos preentrenados, librerías de terceros, fuentes de datos externas y servicios en la nube. Esta dependencia conlleva una serie de riesgos, especialmente si alguno de los elementos de esta cadena es malicioso, vulnerable o no confiable.

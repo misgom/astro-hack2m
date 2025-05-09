@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import AccountLinkerModal from '../components/AccountLinkerModal.svelte';
+import LoginModal from '../components/LoginModal.svelte'
 ---
 
 <!doctype html>
@@ -18,6 +19,7 @@ import AccountLinkerModal from '../components/AccountLinkerModal.svelte';
 			<slot />
 		</main>
 		<AccountLinkerModal client:load />
+		<LoginModal client:load />
 	</body>
 </html>
 

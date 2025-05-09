@@ -3,7 +3,8 @@
     import { Spinner } from 'flowbite-svelte';
     import { onMount } from 'svelte';
     import { currentUser } from '../stores/user';
-    import { fetchCurrentUser } from '../stores/user';
+    import { getCurrentUser } from '../stores/user';
+    import { apiFetch } from '../lib/apiFetch';
 
     let leaderboard = [];
     let loading = true;
@@ -13,8 +14,8 @@
     async function fetchLeaderboard() {
         try {
             loading = true;
-            const response = await fetch(
-                `${config.api.baseUrl}${config.api.endpoints.leaderboard}`,
+            const response = await apiFetch(
+                `${config.api.endpoints.leaderboard}`,
                 { credentials: 'include' }
             );
             if (!response.ok) {
@@ -36,7 +37,7 @@
     }
 
     onMount(async () => {
-        await Promise.all([fetchCurrentUser(), fetchLeaderboard()]);
+        await Promise.all([getCurrentUser(), fetchLeaderboard()]);
         userLoaded = true;
     });
 </script>

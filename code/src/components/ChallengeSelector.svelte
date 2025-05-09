@@ -3,6 +3,7 @@
     import { selectedChallenge, completedChallenges } from '../stores/challenge';
     import { config } from '../config';
     import { onMount } from 'svelte';
+    import { apiFetch } from "../lib/apiFetch";
 
     let challenges = [];
     let loading = true;
@@ -16,12 +17,10 @@
             $selectedChallenge = null;
 
             const [challengesResponse, scoresResponse] = await Promise.all([
-                fetch(
-                    `${config.api.baseUrl}${config.api.endpoints.challenges}`,
+                apiFetch(`${config.api.endpoints.challenges}`,
                     {credentials: 'include'}
                 ),
-                fetch(
-                    `${config.api.baseUrl}${config.api.endpoints.scores}`,
+                apiFetch(`${config.api.endpoints.scores}`,
                     {credentials: 'include'}
                 )
             ]);
@@ -45,8 +44,16 @@
                 throw new Error('Invalid challenges response format');
             }
 
-            if (scoresData.success && scoresData.data && typeof scoresData.data === 'object') {
-                challengeScores = scoresData.data;
+            if (scoresData.success && scoresData.data && Array.isArray(scoresData.data.score)) {
+                challengeScores = scoresData.data.score.reduce((scores, { key, ...attr }) => {
+                    scores[key] = attr;
+                    return scores;
+                }, {});
+                // update completed challenges store
+                completedChallenges.set(Object.entries(challengeScores)
+                    .filter(([_, value]) => value.is_final === true)
+                    .map(([key]) => key)
+                );
             } else {
                 throw new Error('Invalid scores response format');
             }
@@ -104,8 +111,8 @@
                             {/if}
                         </div>
                         {#if challengeScores[challenge.id] !== undefined}
-                            <div class="text-sm text-gray-400 mt-1">
-                                Puntuación: {challengeScores[challenge.id]}
+                            <div class="text-sm text-green-400 mt-1">
+                                Puntuación: {challengeScores[challenge.id].score}
                             </div>
                         {/if}
                     </div>

@@ -2,7 +2,7 @@
 title: LLM05:2025 - Improper Output Handling
 description: Conoce cómo el incorrecto manejo de la salida de los modelos levantan vulnerabilidades y cómo evitarlo
 pubDate: 2024-04-22
-author: Hack2m Team
+author: Miguel M.
 ---
 
 A diferencia del software tradicional, los modelos de lenguaje generan texto libre que no siempre es predecible ni estructurado. Esto implica que, si las salidas de un LLM no se validan, filtran o gestionan adecuadamente antes de ser utilizadas por otras partes del sistema o presentadas al usuario, se pueden producir consecuencias graves a nivel de seguridad, privacidad o integridad del sistema.

@@ -9,6 +9,8 @@
     import 'highlight.js/styles/github-dark.css';
     import { onMount } from 'svelte';
     import Icon from '@iconify/svelte';
+    import DOMPurify from 'dompurify'
+    import { apiFetch } from "../lib/apiFetch";
 
     let loading = false;
     let error = null;
@@ -86,7 +88,7 @@
                 formData.append('file', selectedFile);
             }
 
-            const res = await fetch(`${config.api.baseUrl}${config.api.endpoints.ask}`, {
+            const res = await apiFetch(`${config.api.endpoints.ask}`, {
                 method: 'POST',
                 body: formData,
                 credentials: 'include'
@@ -123,7 +125,7 @@
     }
     async function getFlag() {
         try {
-            const res = await fetch(`${config.api.baseUrl}/xss`, {credentials: 'include'});
+            const res = await apiFetch('/xss', {credentials: 'include'});
             if (!res.ok) throw new Error('Failed to get flag');
             const flag = await res.text();
             alert(flag);
@@ -200,6 +202,12 @@
                         placeholder="¡Intenta conseguir la flag!"
                         class="w-full bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 pr-12 resize-none overflow-hidden"
                         style="min-height: 2.5rem;"
+                        on:keydown={(event) => {
+                            if (event.key === 'Enter' && !event.shiftKey) {
+                                event.preventDefault();
+                                event.target.form?.requestSubmit();
+                            }
+                        }}
                         on:input={(e) => {
                             e.target.style.height = 'auto';
                             e.target.style.height = e.target.scrollHeight + 'px';
@@ -227,12 +235,22 @@
     {/if}
 
     {#if currentAnswer}
+        {#if $selectedChallenge?.id === "improper-output-handling"}
         <div class="mt-8">
             <p class="font-medium text-white mb-2">Respuesta:</p>
             <div class="prose prose-invert max-w-none">
                 {@html marked(currentAnswer)}
             </div>
         </div>
+        {:else}
+        <div class="mt-8">
+            <p class="font-medium text-white mb-2">Respuesta:</p>
+            <div class="prose prose-invert max-w-none">
+                {@html marked(DOMPurify.sanitize(currentAnswer))}
+            </div>
+        </div>
+
+        {/if}
     {/if}
 
     <FlagVerifier />

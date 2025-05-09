@@ -1,9 +1,8 @@
 <script>
     import { Button, Input, Label, Modal } from "flowbite-svelte";
-    import Icon from '@iconify/svelte';
     import { config } from '../config';
-    import { accountLinkerModal, closeAccountLinkerModal } from '../stores/modal';
-    import { getCurrentUser } from '../stores/user';
+    import { loginModal, closeLoginModal } from '../stores/modal';
+    import Icon from '@iconify/svelte';
     import { apiFetch } from "../lib/apiFetch";
 
     let username = '';
@@ -11,56 +10,46 @@
     let showPassword = false;
 
     async function handleSubmit() {
-        if (!password || !username) {
-            accountLinkerModal.update(state => ({ ...state, error: 'Please fill in all fields' }));
-            return;
+        if (!username || !password) {
+            loginModal.update(state => ({ ...state, error: 'Please fill in all fields'}));
         }
 
-        accountLinkerModal.update(state => ({ ...state, loading: true, error: null }));
+        loginModal.update(state => ({ ...state, loading: true, error: null}));
 
         try {
-            const response = await apiFetch(`${config.api.endpoints.link}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    credentials: 'include',
-                    body: new URLSearchParams({
-                        username,
-                        password,
-                    }),
-                }
-            );
-
-            const data = await response.json();
+            const response = await apiFetch(`${config.api.endpoints.login}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    username,
+                    password,
+                }),
+            });
 
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to link account');
+                throw new Error('Invalid credentials');
             }
 
-            accountLinkerModal.update(state => ({ ...state, success: true }));
-            sessionStorage.setItem('auth_token', data?.data?.access_token);
-            // Refresh user data after successful linking
-            await getCurrentUser();
-            // Close modal after 2 seconds
-            setTimeout(closeAccountLinkerModal, 2000);
+            const data = await response.json();
+            sessionStorage.setItem('auth_token', data.access_token);
+            window.location.reload();
         } catch (e) {
-            console.log(e)
-            accountLinkerModal.update(state => ({ ...state, error: e.message }));
+            loginModal.update(state => ({ ...state, error: e.message }));
         } finally {
-            accountLinkerModal.update(state => ({ ...state, loading: false }));
+            loginModal.update(state => ({ ...state, loading: false }));
         }
     }
 </script>
 
-<Modal bind:open={$accountLinkerModal.isOpen} on:close={closeAccountLinkerModal}>
+<Modal bind:open={$loginModal.isOpen} on:close={closeLoginModal}>
     <div class="p-6">
         <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-4">
             Vincula tu cuenta para guardar tu progreso
         </h3>
 
-        {#if $accountLinkerModal.success}
+        {#if $loginModal.success}
             <div class="text-green-500 text-center py-4">
                 ¡Cuenta vinculada correctamente!
             </div>
@@ -95,21 +84,22 @@
                     </div>
                 </div>
 
-                {#if $accountLinkerModal.error}
+                {#if $loginModal.error}
                     <div class="text-red-500 text-sm">
-                        {$accountLinkerModal.error}
+                        {$loginModal.error}
                     </div>
                 {/if}
 
                 <div class="flex justify-end space-x-2 mt-4">
-                    <Button color="gray" on:click={closeAccountLinkerModal}>
+                    <Button color="gray" on:click={closeLoginModal}>
                         Cancelar
                     </Button>
-                    <Button type="submit" color="blue" disabled={$accountLinkerModal.loading}>
-                        {$accountLinkerModal.loading ? 'Vinculando...' : 'Crear Cuenta'}
+                    <Button type="submit" color="blue" disabled={$loginModal.loading}>
+                        {$loginModal.loading ? 'Creando...' : 'Crear Cuenta'}
                     </Button>
                 </div>
             </form>
         {/if}
     </div>
+
 </Modal>

@@ -1,6 +1,6 @@
 export const config = {
     api: {
-        baseUrl: import.meta.env.PUBLIC_API_BASE_URL ?? 'http://localhost:8000/api/v1',
+        baseUrl: import.meta.env.PUBLIC_API_BASE_URL ?? 'http://localhost:8000/api',
         endpoints: {
             challenges: '/challenge-definitions',
             ask: '/ask',
@@ -8,7 +8,9 @@ export const config = {
             leaderboard: '/leaderboard',
             scores: '/score',
             link: '/users/link-account',
-            user: '/user'
+            user: '/user',
+            login: '/login',
+            token: '/token'
         },
     },
 } as const;

@@ -2,7 +2,7 @@
 title: LLM04:2025 - Data and Model Poisoning
 description: Aprende sobre ataques de envenenamiento de datos y modelos y cómo protegerete
 pubDate: 2024-04-22
-author: Hack2m Team
+author: Miguel M.
 ---
 
 El envenenamiento de datos y del modelo es una técnica maliciosa mediante la cual un atacante introduce información manipulada con el objetivo de alterar el comportamiento de un modelo de lenguaje, comprometer su integridad o insertar puertas traseras. En el contexto de los LLM, este tipo de ataque representa una amenaza creciente, especialmente cuando se utilizan procesos automáticos de entrenamiento o fine-tuning con datos dinámicos, como foros, redes sociales o bases de conocimiento abiertas.

@@ -1,6 +1,7 @@
 ---
 import UserInfo from './UserInfo.svelte';
 import AccountLinker from './AccountLinker.svelte';
+import Login from './Login.svelte';
 
 interface Props {
   currentPath?: string;
@@ -61,6 +62,7 @@ const { currentPath = '/' } = Astro.props;
       </div>
       <div class="flex items-center gap-4">
         <UserInfo client:load />
+        <Login client:load />
         <AccountLinker client:load />
       </div>
     </div>

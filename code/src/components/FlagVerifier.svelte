@@ -3,6 +3,7 @@
     import { selectedChallenge, completedChallenges } from '../stores/challenge';
     import { config } from '../config';
     import Icon from '@iconify/svelte';
+    import { apiFetch } from "../lib/apiFetch";
 
     let flag = '';
     let verifying = false;
@@ -21,7 +22,7 @@
         result = null;
 
         try {
-            const response = await fetch(`${config.api.baseUrl}${config.api.endpoints.verify}`, {
+            const response = await apiFetch(`${config.api.endpoints.verify}`, {
                 method: "POST",
                 credentials: "include",
                 headers: {

@@ -2,7 +2,7 @@
 title: LLM02:2025 - Sensitive Information Disclosure
 description: Aprende cómo la divulgación de información sensible ocurre y cómo evitarlo
 pubDate: 2024-04-22
-author: Hack2m Team
+author: Miguel M.
 ---
 
 Uno de los riesgos más significativos en los LLM es la posible filtración de información sensible. Dado que estos modelos han sido entrenados con vastas cantidades de datos, pueden, en ciertas condiciones, revelar fragmentos de información confidencial. Esto puede incluir datos privados de usuarios, información protegida por derechos de autor, detalles empresariales y, en casos más graves, información de seguridad crítica.

@@ -9,6 +9,15 @@ export const accountLinkerModal = writable({
     success: false
 });
 
+export const loginModal = writable({
+    isOpen: false,
+    username: '',
+    password: '',
+    showPassword: false,
+    loading: false,
+    error: null as string | null,
+});
+
 export function openAccountLinkerModal() {
     accountLinkerModal.set({
         isOpen: true,
@@ -28,5 +37,27 @@ export function closeAccountLinkerModal() {
         loading: false,
         error: null,
         success: false
+    });
+}
+
+export function openLoginModal() {
+    loginModal.set({
+        isOpen: true,
+        username: '',
+        password: '',
+        showPassword: false,
+        error: null,
+        loading: false
+    });
+}
+
+export function closeLoginModal() {
+    loginModal.set({
+        isOpen: false,
+        username: '',
+        password: '',
+        showPassword: false,
+        error: null,
+        loading: false
     });
 }

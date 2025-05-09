@@ -2,7 +2,7 @@
 title: LLM06:2025 - Excessive Agency
 description: Aprende sobre qué es la "agencia excesiva" y cómo proteger tu sistema
 pubDate: 2024-04-22
-author: Hack2m Team
+author: Miguel M.
 ---
 
 La integración de modelos de lenguaje en aplicaciones cada vez más automatizadas ha llevado al desarrollo de agentes autónomos capaces de realizar acciones complejas en nombre del usuario: desde reservar vuelos hasta modificar archivos del sistema, ejecutar comandos, o interactuar con múltiples APIs. Sin embargo, dotar a un modelo de lenguaje de un alto grado de agencia, es decir, capacidad de tomar decisiones y actuar sobre un entorno sin los controles adecuados representa un riesgo significativo para la seguridad y la integridad del sistema.
