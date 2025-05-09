@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('learn');
+---
+
+<Layout title="Learn - Hack2m">
+	<!-- background -->
+	<div class="fixed inset-0 -z-10 min-h-screen w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
+
+	<main class="container mx-auto px-4 py-8">
+		<div class="text-center mb-12">
+			<h1 class="text-5xl font-bold text-white mb-4">Aprende seguridad de LLM</h1>
+			<p class="text-xl text-white/80 max-w-2xl mx-auto">
+				Explora la colección de artículos y guías sobre vulnerabilidades y seguridad de LLMs. Basado en el OWASP Top 10 for LLM Applications.
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			{articles.map((article) => (
+				<a href={`/learn/${article.slug}`} class="block bg-white/10 p-6 rounded-lg hover:bg-white/20 transition-colors">
+					<h3 class="text-xl font-bold text-white mb-4">{article.data.title}</h3>
+					<p class="text-white/80">{article.data.description}</p>
+				</a>
+			))}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	html, body {
+		min-height: 100%;
+	}
+</style>

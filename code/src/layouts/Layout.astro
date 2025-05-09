@@ -1,3 +1,9 @@
+---
+import Header from '../components/Header.astro';
+import AccountLinkerModal from '../components/AccountLinkerModal.svelte';
+import LoginModal from '../components/LoginModal.svelte'
+---
+
 <!doctype html>
 <html class="dark" lang="en">
 	<head>
@@ -7,8 +13,13 @@
 		<meta name="generator" content={Astro.generator} />
 		<title>Hack2m</title>
 	</head>
-	<body>
-		<slot />
+	<body class="min-h-screen bg-gray-50">
+		<Header currentPath={Astro.url.pathname} />
+		<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			<slot />
+		</main>
+		<AccountLinkerModal client:load />
+		<LoginModal client:load />
 	</body>
 </html>
 
@@ -18,5 +29,151 @@
 		margin: 0;
 		width: 100%;
 		height: 100%;
+		color: white;
+	}
+
+	/* Global markdown styles */
+	:global(.prose) {
+		color: white;
+	}
+
+	:global(.prose pre) {
+		background-color: #1a1a1a;
+		padding: 0.75rem;
+		border-radius: 0.5rem;
+		overflow-x: auto;
+	}
+
+	:global(.prose pre code) {
+		background-color: transparent;
+		padding: 0;
+		border-radius: 0;
+		color: inherit;
+		display: block;
+		font-family: 'Fira Code', monospace;
+		font-size: 0.9em;
+		line-height: 1.4;
+	}
+
+	:global(.prose code:not(pre code)) {
+		background-color: #1a1a1a;
+		padding: 0.2rem 0.4rem;
+		border-radius: 0.25rem;
+	}
+
+	/* Override highlight.js styles to match our theme */
+	:global(.hljs) {
+		background: transparent;
+	}
+
+	/* Headings */
+	:global(.prose h1) {
+		font-size: 2em;
+		font-weight: 700;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		color: white;
+	}
+
+	:global(.prose h2) {
+		font-size: 1.5em;
+		font-weight: 600;
+		margin-top: 1.75rem;
+		margin-bottom: 0.875rem;
+		color: white;
+	}
+
+	:global(.prose h3) {
+		font-size: 1.25em;
+		font-weight: 600;
+		margin-top: 1.5rem;
+		margin-bottom: 0.75rem;
+		color: white;
+	}
+
+	:global(.prose h4) {
+		font-size: 1.125em;
+		font-weight: 600;
+		margin-top: 1.25rem;
+		margin-bottom: 0.625rem;
+		color: white;
+	}
+
+	/* Lists */
+	:global(.prose ul) {
+		list-style-type: disc;
+		margin-top: 0.5rem;
+		margin-bottom: 1rem;
+		padding-left: 1.5rem;
+	}
+
+	:global(.prose ol) {
+		list-style-type: decimal;
+		margin-top: 0.5rem;
+		margin-bottom: 1rem;
+		padding-left: 1.5rem;
+	}
+
+	:global(.prose li) {
+		margin-top: 0.25rem;
+		margin-bottom: 0.25rem;
+	}
+
+	:global(.prose li > p) {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	:global(.prose li > *:first-child) {
+		margin-top: 0;
+	}
+
+	:global(.prose li > *:last-child) {
+		margin-bottom: 0;
+	}
+
+	:global(.prose a) {
+		color: #63e;
+		text-decoration: underline;
+	}
+
+	:global(.prose p) {
+		margin-bottom: 1rem;
+	}
+
+	:global(.prose blockquote) {
+		border-left: 4px solid #63e;
+		padding-left: 1rem;
+		margin-left: 0;
+		color: #a0a0a0;
+		font-style: italic;
+	}
+
+	:global(.prose img) {
+		border-radius: 0.5rem;
+		margin: 2rem auto;
+	}
+
+	:global(.prose table) {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1.5rem 0;
+	}
+
+	:global(.prose th) {
+		background-color: #1a1a1a;
+		padding: 0.75rem;
+		text-align: left;
+		border: 1px solid #333;
+	}
+
+	:global(.prose td) {
+		padding: 0.75rem;
+		border: 1px solid #333;
+	}
+
+	:global(.prose hr) {
+		border-color: #333;
+		margin: 2rem 0;
 	}
 </style>

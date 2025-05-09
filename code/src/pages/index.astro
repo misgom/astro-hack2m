@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Button } from "flowbite-svelte";
 import App from '../components/App.svelte';
 import Chat from '../components/Chat.svelte';
 ---
@@ -8,14 +9,32 @@ import Chat from '../components/Chat.svelte';
 	<!-- background -->
 	<div class="fixed inset-0 -z-10 min-h-screen w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
 
-	<main class="grid place-content-center min-h-screen w-screen">
-		<h1 class="text-white text-5xl opacity-80 font-bold text-center pb-10">
-			Prueba tus habilidades para hacking de LLM y aprende!
-		</h1>
+	<main class="container mx-auto px-4 py-8">
+		<div class="text-center">
+			<h1 class="text-5xl font-bold text-white mb-8">Bienvenido a Hack2m</h1>
+			<p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+				Una plataforma para aprender y practicar retos de seguridad en LLM. Pon a prueba tus habilidades en diversos escenarios de inyección de prompts y seguridad.
+			</p>
+			<div class="space-x-4">
+				<Button href="/challenges" color="blue" size="xl">Comenzar Retos</Button>
+				<Button href="/learn" color="dark" size="xl">Aprender Más</Button>
+			</div>
+		</div>
 
-		<section class="container w-[1000px] max-w-xl h-64">
-			<Chat client:idle />
-		</section>
+		<div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+			<div class="bg-white/10 p-6 rounded-lg">
+				<h3 class="text-xl font-bold text-white mb-4">6 Retos Únicos</h3>
+				<p class="text-white/80">Pon a prueba tus habilidades en diferentes niveles de dificultad y escenarios de seguridad.</p>
+			</div>
+			<div class="bg-white/10 p-6 rounded-lg">
+				<h3 class="text-xl font-bold text-white mb-4">Retroalimentación en Tiempo Real</h3>
+				<p class="text-white/80">Obtén respuestas inmediatas y aprende de tus intentos.</p>
+			</div>
+			<div class="bg-white/10 p-6 rounded-lg">
+				<h3 class="text-xl font-bold text-white mb-4">Aprende Seguridad</h3>
+				<p class="text-white/80">Explora nuestras guías y artículos completos sobre seguridad en LLM y mejores prácticas.</p>
+			</div>
+		</div>
 	</main>
 </Layout>
 

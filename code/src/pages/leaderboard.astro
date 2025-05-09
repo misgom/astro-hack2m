@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LeaderboardComponent from '../components/Leaderboard.svelte';
+---
+
+<Layout title="Clasificación - Hack2m">
+	<!-- background -->
+	<div class="fixed inset-0 -z-10 min-h-screen w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
+
+	<main class="container mx-auto px-4 py-8">
+		<div class="text-center mb-12">
+			<h1 class="text-5xl font-bold text-white mb-4">Clasificación</h1>
+			<p class="text-xl text-white/80 max-w-2xl mx-auto">
+				Mira cómo te clasificas frente a otros jugadores en los retos de Hack2m.
+			</p>
+		</div>
+
+		<div class="max-w-4xl mx-auto">
+			<LeaderboardComponent client:load />
+		</div>
+	</main>
+</Layout>
+
+<style>
+	html, body {
+		min-height: 100%;
+	}
+</style>
